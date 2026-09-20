@@ -1,0 +1,8 @@
+{
+  "queue": {
+    "confidence": 0.8
+  },
+  "urgent": {
+    "threshold": 0.9
+  }
+}
