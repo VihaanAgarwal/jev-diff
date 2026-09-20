@@ -4,6 +4,7 @@ import sys
 from pathlib import Path
 
 from .compare import compare
+from .html import render_html, write_html
 from .records import RecordError, load_records, make_record, read_json
 
 
@@ -55,19 +56,32 @@ def main(argv=None):
     diff.add_argument("--candidate-policy", type=Path, help="Changed policy; defaults to --policy")
     diff.add_argument("--max-tv", type=float, default=0.2, help="Maximum distribution shift (0..1)")
     diff.add_argument("--json", action="store_true", help="Write a machine-readable report")
+    diff.add_argument("--html", type=Path, help="Also save an interactive, offline HTML report")
     args = parser.parse_args(argv)
     try:
         if args.command == "record":
             result = make_record(args.id, _read(args.request), _read(args.response))
             print(json.dumps(result, ensure_ascii=True, allow_nan=False))
             return 0
-        result = compare(
-            load_records(args.baseline),
-            load_records(args.candidate),
-            policy=_read(args.policy) if args.policy else None,
-            candidate_policy=_read(args.candidate_policy) if args.candidate_policy else None,
-            max_tv=args.max_tv,
-        )
+        before, after = load_records(args.baseline), load_records(args.candidate)
+        policy = _read(args.policy) if args.policy else {}
+        candidate_policy = _read(args.candidate_policy) if args.candidate_policy else policy
+        options = dict(policy=policy, candidate_policy=candidate_policy, max_tv=args.max_tv)
+        result = compare(before, after, **options)
+        if args.html:
+            content = render_html(
+                result,
+                before,
+                after,
+                **options,
+                labels={"baseline": args.baseline.name, "candidate": args.candidate.name},
+            )
+            write_html(
+                args.html,
+                content,
+                (args.baseline, args.candidate, args.policy, args.candidate_policy),
+            )
+            print(f"HTML report: {_display(str(args.html))}", file=sys.stderr)
         if args.json:
             print(json.dumps(result, indent=2, ensure_ascii=True, allow_nan=False))
         else:

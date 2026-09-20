@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-__SCRIPT_HASH__'; style-src 'unsafe-inline'; img-src data:; connect-src 'none'; base-uri 'none'; form-action 'none'">
+  <meta name="color-scheme" content="light dark">
+  <title>Decision review | jev-diff</title>
+  <style>__CSS__</style>
+</head>
+<body>
+  <a class="skip" href="#detail">Skip to case details</a>
+  <header class="topbar">
+    <div class="brand"><span class="mark" aria-hidden="true">≠</span> jev-diff <span class="slash">/</span> <span class="muted">Decision review</span></div>
+    <span class="local"><span aria-hidden="true">●</span> Offline report</span>
+  </header>
+  <main>
+    <noscript><p class="fatal">JavaScript is needed to explore this report. The CLI's text and JSON outputs work without it.</p></noscript>
+    <section class="overview" aria-labelledby="review-title">
+      <div class="overview-heading"><div><p class="eyebrow">BASELINE → CANDIDATE</p><h1 id="review-title">Decision review</h1></div><button id="download" type="button" disabled>Export diff JSON <span aria-hidden="true">↓</span></button></div>
+      <p id="overview-text" class="muted">Loading saved comparison…</p>
+      <div id="sources" class="sources"></div>
+      <div id="summary" class="summary" aria-label="Comparison summary"></div>
+    </section>
+    <section class="workspace" aria-label="Explore the comparison">
+      <aside class="case-browser" aria-label="Cases">
+        <div class="case-tools">
+          <div class="section-heading"><h2>Cases</h2><span id="case-count" class="muted" role="status" aria-live="polite"></span></div>
+          <label for="search" class="sr-only">Search cases and questions</label>
+          <input id="search" type="search" placeholder="Search cases or questions" autocomplete="off" spellcheck="false">
+          <label for="filter" class="sr-only">Filter cases</label>
+          <select id="filter"><option value="changed">Changed cases</option><option value="all">All cases</option><option value="threshold_crossed">Gate crossings</option><option value="choice_changed">Label changes</option><option value="distribution_shift">Distribution shifts</option><option value="contract">Input or contract changes</option><option value="unchanged">No flagged changes</option></select>
+        </div>
+        <nav id="cases" aria-label="Select a case"></nav>
+        <div class="case-help">Use <kbd>↑</kbd> <kbd>↓</kbd> within the list.</div>
+      </aside>
+      <article id="detail" class="detail" tabindex="-1" aria-label="Selected case"></article>
+    </section>
+    <footer><span>Changes are evidence to review, not a verdict on correctness.</span><details><summary>About this report</summary><p>This file contains saved question definitions, answers, model IDs, state digests, and policies. There are no network requests or external assets. Raw state is omitted; question text and labels can still be sensitive. A state digest is not anonymization.</p><p>Gate equality is on the upper side (value ≥ threshold). Choice and Score confidence is the API's confidence field, not the highest probability. Probability bars show recorded values; distribution distance uses normalized values. This report is a fixed snapshot. It does not replay your application or call Jev.</p></details></footer>
+  </main>
+  <script id="data" type="application/json">__DATA__</script>
+  <script>__JS__</script>
+</body>
+</html>
